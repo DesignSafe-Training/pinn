@@ -4,6 +4,6 @@
 format: jb-book
 root: README
 chapters:
-  - file: lectures/01-pinn/01-pinn
-  - file: lectures/02-pinn-ode/02-pinn-ode
-  - file: lectures/03-burgers/03-burgers
+  - file: 01-pinn/01-pinn
+  - file: 02-pinn-ode/02-pinn-ode
+  - file: 03-burgers/03-burgers
