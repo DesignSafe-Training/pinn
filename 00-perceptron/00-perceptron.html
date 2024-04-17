@@ -552,17 +552,7 @@ every single neural network and that’s going to be just a single neuron and in
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="ne">----&gt; </span><span class="mi">2</span> <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="c1"># Sigmoid activation function</span>
-
-<span class="ne">ModuleNotFoundError</span>: No module named &#39;matplotlib&#39;
-</pre></div>
-</div>
+<img alt="../_images/ae2118160cc61f6472b2f34fc1e7a4158659caba54078da3bc7ba366cb55047a.png" src="../_images/ae2118160cc61f6472b2f34fc1e7a4158659caba54078da3bc7ba366cb55047a.png" />
 </div>
 </div>
 <p><strong>ReLU</strong> The Rectified Linear Unit (ReLU) thresholds the input at zero, returning 0 for negative values and the raw input for positive values. It helps avoid vanishing gradients and is computationally efficient. However, it has a problem with “dying” neurons if inputs are consistently negative. For example, if a neuron in the first layer learns weights that result in a negative input, it will output 0. In backpropagation, since the gradient of the ReLU function is 0 for negative inputs, this neuron will not update its weights. Over time it will not activate on any data and is considered “dead”.</p>
@@ -601,7 +591,7 @@ every single neural network and that’s going to be just a single neuron and in
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/921bfb0aeb0eb918e0e54d18f36883a27e3f461bef279c1858b3410b8144c92b.png" src="../_images/921bfb0aeb0eb918e0e54d18f36883a27e3f461bef279c1858b3410b8144c92b.png" />
+<img alt="../_images/aa36b40b94cf2998934b2bfa8cf07c96a631b65b9be840f345d6f7f62bda9603.png" src="../_images/aa36b40b94cf2998934b2bfa8cf07c96a631b65b9be840f345d6f7f62bda9603.png" />
 </div>
 </div>
 <section id="single-layer-neural-network">
@@ -637,8 +627,8 @@ every single neural network and that’s going to be just a single neuron and in
 <div class="math notranslate nohighlight">
 \[\begin{split} 
 \begin{align}
-\boldsymbol{w^*} &amp;= \argmin_{\boldsymbol{w}}\frac{1}{n}\sum_{i=1}^n \mathcal{L}(f(x^{(i)};\boldsymbol{w}),y^{(i)})\\
-\boldsymbol{w^*} &amp;= \argmin_{\boldsymbol{w}} J(\boldsymbol{w})
+\boldsymbol{w^*} &amp;= \mathrm{argmin}_{\boldsymbol{w}}\frac{1}{n}\sum_{i=1}^n \mathcal{L}(f(x^{(i)};\boldsymbol{w}),y^{(i)})\\
+\boldsymbol{w^*} &amp;= \mathrm{argmin}_{\boldsymbol{w}} J(\boldsymbol{w})
 \end{align}
 \end{split}\]</div>
 <p>The training process works like this:</p>
@@ -691,13 +681,13 @@ every single neural network and that’s going to be just a single neuron and in
 <p>To minimize this loss, we need to compute the gradients with respect to the weights <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> and bias <span class="math notranslate nohighlight">\(b\)</span>:</p>
 <p>Using the chain rule, the gradient of the loss with respect to the weights is:
 $<span class="math notranslate nohighlight">\(\frac{\partial \text{loss}}{\partial \mathbf{w}} = \frac{2}{n}\sum_{i=1}^{n}(y_i - \hat{y}_i) \frac{\partial y_i}{\partial \mathbf{w}}\)</span>$</p>
-<p>The term inside the sum is the gradient of the loss with respect to the output <span class="math notranslate nohighlight">\(y_i\)</span>, which we called <span class="math notranslate nohighlight">\(\text{grad\_output}\)</span>:
-$<span class="math notranslate nohighlight">\(\text{grad\_output} = \frac{2}{n}\sum_{i=1}^{n}(y_i - \hat{y}_i)\)</span>$</p>
+<p>The term inside the sum is the gradient of the loss with respect to the output <span class="math notranslate nohighlight">\(y_i\)</span>, which we called <span class="math notranslate nohighlight">\(\mathrm{grad\_output}\)</span>:
+$<span class="math notranslate nohighlight">\(\mathrm{grad\_output} = \frac{2}{n}\sum_{i=1}^{n}(y_i - \hat{y}_i)\)</span>$</p>
 <p>The derivative <span class="math notranslate nohighlight">\(\frac{\partial y_i}{\partial \mathbf{w}}\)</span> is just the input <span class="math notranslate nohighlight">\(\mathbf{x}_i\)</span> multiplied by the derivative of the activation. For simplicity, let’s assume linear activation, so this is just <span class="math notranslate nohighlight">\(\mathbf{x}_i\)</span>:</p>
 <div class="math notranslate nohighlight">
-\[\therefore \frac{\partial \text{loss}}{\partial \mathbf{w}} = \mathbf{X}^T\text{grad\_output}\]</div>
+\[\therefore \frac{\partial \text{loss}}{\partial \mathbf{w}} = \mathbf{X}^T\mathrm{grad\_output}\]</div>
 <p>The gradient for the bias is simpler:
-$<span class="math notranslate nohighlight">\(\frac{\partial \text{loss}}{\partial b} = \sum_{i=1}^{n}\text{grad\_output}_i\)</span>$</p>
+$<span class="math notranslate nohighlight">\(\frac{\partial \text{loss}}{\partial b} = \sum_{i=1}^{n}\mathrm{grad\_output}_i\)</span>$</p>
 <p>Finally, we update the weights and bias by gradient descent:</p>
 <div class="math notranslate nohighlight">
 \[\mathbf{w} = \mathbf{w} - \eta \frac{\partial \text{loss}}{\partial \mathbf{w}}\]</div>
@@ -711,7 +701,7 @@ $<span class="math notranslate nohighlight">\(\frac{\partial \text{loss}}{\parti
 <span class="c1"># Training loop</span>
 <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
     <span class="c1"># Forward pass</span>
-    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">bingham_nn</span><span class="p">(</span><span class="n">v_values</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">bias</span><span class="p">)</span>
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">bias</span><span class="p">)</span>
     <span class="c1"># Compute loss as MSE</span>
     <span class="n">loss</span> <span class="o">=</span> <span class="p">((</span><span class="n">y_pred</span> <span class="o">-</span> <span class="n">y_true</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
     
@@ -871,12 +861,12 @@ $<span class="math notranslate nohighlight">\(\frac{\partial \text{loss}}{\parti
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0, Loss: 8.65e-07
-Epoch 500, Loss: 8.49e-07
-Epoch 1000, Loss: 8.46e-07
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0, Loss: 3.03e-03
+Epoch 500, Loss: 1.26e-06
+Epoch 1000, Loss: 1.13e-06
 </pre></div>
 </div>
-<img alt="../_images/ddde4416cc864339fca001c856439a0909e8bc165c88e6839399692e2c80820c.png" src="../_images/ddde4416cc864339fca001c856439a0909e8bc165c88e6839399692e2c80820c.png" />
+<img alt="../_images/1a10242c92597ddb82453a6e11892c55553e38794b593e5589d2573af06e47c4.png" src="../_images/1a10242c92597ddb82453a6e11892c55553e38794b593e5589d2573af06e47c4.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -924,15 +914,15 @@ Epoch 1000, Loss: 8.46e-07
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0, Loss: 8.70e-07
-Epoch 500, Loss: 8.71e-07
-Epoch 1000, Loss: 8.68e-07
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0, Loss: 1.13e-06
+Epoch 500, Loss: 1.03e-06
+Epoch 1000, Loss: 1.01e-06
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Loss Evolution&#39;)
 </pre></div>
 </div>
-<img alt="../_images/ac178408a1ce7f505732ea06f0aadfe8156bc1701d075c28a91fc7f5224aed41.png" src="../_images/ac178408a1ce7f505732ea06f0aadfe8156bc1701d075c28a91fc7f5224aed41.png" />
+<img alt="../_images/e6e6f5a89823b92aa28f945ea3e0cd8c78a3edf29e936455835e617fbe843cff.png" src="../_images/e6e6f5a89823b92aa28f945ea3e0cd8c78a3edf29e936455835e617fbe843cff.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -952,7 +942,7 @@ Epoch 1000, Loss: 8.68e-07
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/9c64f9642e8c70639eb9a6ccecca30132f01727e0b2e2041a638a8101ea53c2c.png" src="../_images/9c64f9642e8c70639eb9a6ccecca30132f01727e0b2e2041a638a8101ea53c2c.png" />
+<img alt="../_images/5072cea08f4603828ecf0942345c5095b88a354f52e15a0ba682bd370b34fd31.png" src="../_images/5072cea08f4603828ecf0942345c5095b88a354f52e15a0ba682bd370b34fd31.png" />
 </div>
 </div>
 <p>Hyperparameters are values that we set before beginning the training process. They guide the learning process and differ from model parameters, which are learned from the training data. Below are some key hyperparameters:</p>
