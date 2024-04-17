@@ -424,7 +424,12 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pytorch-version-of-bingham-model">PyTorch version of Bingham Model</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neural-network-example">Neural Network Example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neural-network-example">Neural Network Example</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-pytorch-model-with-16-parameters-and-5-layers">Create a PyTorch model with 16 parameters and 5 layers</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#train-the-model">Train the model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#add-a-physics-constraint">Add a physics constraint</a></li>
+</ul>
+</li>
 </ul>
             </nav>
         </div>
@@ -774,6 +779,7 @@ $<span class="math notranslate nohighlight">\(\frac{\partial \text{loss}}{\parti
 <blockquote>
 <div><p>Deflection of a cantilever beam</p>
 </div></blockquote>
+<p><img alt="Cantilever Beam" src="../_images/cantilever.png" /></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
@@ -799,6 +805,8 @@ $<span class="math notranslate nohighlight">\(\frac{\partial \text{loss}}{\parti
 </div>
 </div>
 </div>
+<section id="create-a-pytorch-model-with-16-parameters-and-5-layers">
+<h3>Create a PyTorch model with 16 parameters and 5 layers<a class="headerlink" href="#create-a-pytorch-model-with-16-parameters-and-5-layers" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># PyTorch model</span>
@@ -829,6 +837,9 @@ $<span class="math notranslate nohighlight">\(\frac{\partial \text{loss}}{\parti
 </div>
 </div>
 </div>
+</section>
+<section id="train-the-model">
+<h3>Train the model<a class="headerlink" href="#train-the-model" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Loss function and optimizer</span>
@@ -869,6 +880,10 @@ Epoch 1000, Loss: 1.13e-06
 <img alt="../_images/1a10242c92597ddb82453a6e11892c55553e38794b593e5589d2573af06e47c4.png" src="../_images/1a10242c92597ddb82453a6e11892c55553e38794b593e5589d2573af06e47c4.png" />
 </div>
 </div>
+</section>
+<section id="add-a-physics-constraint">
+<h3>Add a physics constraint<a class="headerlink" href="#add-a-physics-constraint" title="Permalink to this heading">#</a></h3>
+<p>Set the deflection of the fixed end to be zero in the loss function</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Optimizer</span>
@@ -965,6 +980,7 @@ Epoch 1000, Loss: 1.01e-06
 </div></blockquote>
 </section>
 </section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -1044,7 +1060,12 @@ Epoch 1000, Loss: 1.01e-06
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pytorch-version-of-bingham-model">PyTorch version of Bingham Model</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neural-network-example">Neural Network Example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neural-network-example">Neural Network Example</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-pytorch-model-with-16-parameters-and-5-layers">Create a PyTorch model with 16 parameters and 5 layers</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#train-the-model">Train the model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#add-a-physics-constraint">Add a physics constraint</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 
