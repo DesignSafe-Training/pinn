@@ -1,0 +1,1112 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>00: Perceptron &#8212; Physics Informed Machine Learning</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '00-perceptron/00-perceptron';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="01: Physics-Informed Neural Networks (PINNs)" href="../01-pinn/01-pinn.html" />
+    <link rel="prev" title="Physics Informed Machine Learning" href="../README.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../README.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Physics Informed Machine Learning - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Physics Informed Machine Learning - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../README.html">
+                    Physics Informed Machine Learning
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">00: Perceptron</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01-pinn/01-pinn.html">01: Physics-Informed Neural Networks (PINNs)</a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="../02-pinn-heat-transfer/02-pinn-heat-transfer.html">02: PINNs and steady-state heat transfer</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../03-burgers/03-burgers.html">03: Forward and inverse modeling of Burger’s Equation</a></li>
+
+
+
+
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/designsafe-training/pinn/blob/main/docs/00-perceptron/00-perceptron.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/designsafe-training/pinn" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/designsafe-training/pinn/issues/new?title=Issue%20on%20page%20%2F00-perceptron/00-perceptron.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/00-perceptron/00-perceptron.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>00: Perceptron</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#weights-and-biases">Weights and biases</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nonlinear-activation-function">Nonlinear Activation Function</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#single-layer-neural-network">Single-Layer Neural Network</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training-a-neural-network">Training a neural network</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gradient-descent">Gradient Descent</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#algorithm">Algorithm:</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#variants">Variants:</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations">Limitations:</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pytorch-version-of-bingham-model">PyTorch version of Bingham Model</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neural-network-example">Neural Network Example</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="perceptron">
+<h1>00: Perceptron<a class="headerlink" href="#perceptron" title="Permalink to this heading">#</a></h1>
+<p><strong>Exercise:</strong> <a class="reference external" href="https://colab.research.google.com/github/kks32-courses/sciml/blob/main/lectures/00-perceptron/00-perceptron-exercise.ipynb"><img alt="Open in Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a>
+<strong>Solution:</strong> <a class="reference external" href="https://colab.research.google.com/github/kks32-courses/sciml/blob/main/lectures/00-perceptron/00-perceptron.ipynb"><img alt="Open in Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
+<p>So let’s start now with just building from the ground up the fundamental building block of
+every single neural network and that’s going to be just a single neuron and in neural network language a single neuron is called a <code class="docutils literal notranslate"><span class="pre">perceptron</span></code>.</p>
+<p>The perceptron is a simple single layer neural network that takes an input vector <span class="math notranslate nohighlight">\(\boldsymbol{x} = [x_1, x_2, ..., x_n]\)</span>, multiplies it by a weight vector <span class="math notranslate nohighlight">\(\boldsymbol{w} = [w_1, w_2, ..., w_n]\)</span>, sums the weighted inputs, and passes the <span class="math notranslate nohighlight">\(\sum_i w_ix_i\)</span> added to a bias <span class="math notranslate nohighlight">\(w_0\)</span> as <span class="math notranslate nohighlight">\(z =  w_0 +  \sum_i w_ix_i\)</span>  through an activation function <span class="math notranslate nohighlight">\(g(z)\)</span> to produce an output <span class="math notranslate nohighlight">\(\hat{y}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[z = \mathrm{bias} + \mathrm{linear\_ combination\_ of \_ inputs}\]</div>
+<div class="math notranslate nohighlight">
+\[z = w_0 + \boldsymbol{w}^T\boldsymbol{x} = w_0 +  \sum_i w_ix_i \]</div>
+<div class="math notranslate nohighlight">
+\[\hat{y} = g(z) \]</div>
+<p>The activation function <span class="math notranslate nohighlight">\(g\)</span> introduces nonlinearity to allow the perceptron to learn complex mappings from inputs to outputs. Typical choices for <span class="math notranslate nohighlight">\(g\)</span> are <code class="docutils literal notranslate"><span class="pre">sigmoid</span></code>, <code class="docutils literal notranslate"><span class="pre">tanh</span></code>, or <code class="docutils literal notranslate"><span class="pre">ReLU</span></code> functions, though the original perceptron used a step function.</p>
+<p>The perceptron can be trained via supervised learning, adjusting the weights and biases to minimize the loss between the predicted <span class="math notranslate nohighlight">\(\hat{y}\)</span> and the true label <span class="math notranslate nohighlight">\(y^{\text{true}}\)</span>. Backpropagation combined with gradient descent can be used to iteratively update the weights to reduce the loss.</p>
+<p>The key components of a perceptron are:</p>
+<ul class="simple">
+<li><p>Input vector <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span></p></li>
+<li><p>Weight vector <span class="math notranslate nohighlight">\(\boldsymbol{w}\)</span></p></li>
+<li><p>Weighted sum <span class="math notranslate nohighlight">\(z = \boldsymbol{w}^T\boldsymbol{x}\)</span></p></li>
+<li><p>Nonlinear activation <span class="math notranslate nohighlight">\(g\)</span></p></li>
+<li><p>Output prediction <span class="math notranslate nohighlight">\(\hat{y}\)</span></p></li>
+</ul>
+<p>The perceptron provides a basic model of a neuron, and multilayer perceptrons composed of many interconnected perceptrons can be used to build neural networks with substantial representational power. A perceptron takes a set of inputs, scales them by corresponding weights, sums them together with a bias, applies a non-linear step function, and produces an output. This simple model can represent linear decision boundaries and serves as a building block for more complex neural networks. In training, weights are updated based on the difference between the predicted output and the actual label, often using the Perceptron learning algorithm.</p>
+<p><img alt="Perceptron" src="../_images/perceptron.png" /></p>
+<blockquote>
+<div><p>Credits: Alexander Amini, MIT</p>
+</div></blockquote>
+<section id="weights-and-biases">
+<h2>Weights and biases<a class="headerlink" href="#weights-and-biases" title="Permalink to this heading">#</a></h2>
+<p>The weights and biases are the parameters of the perceptron that allow it to learn complex mappings from inputs to outputs.</p>
+<p>The weights <span class="math notranslate nohighlight">\(w_i\)</span> determine how much influence each input <span class="math notranslate nohighlight">\(x_i\)</span> has on the output. Inputs with higher weights have a larger impact. The bias <span class="math notranslate nohighlight">\(b\)</span> allows the perceptron to shift the decision boundary away from the origin</p>
+<p>The input vector:</p>
+<p><span class="math notranslate nohighlight">\(\boldsymbol{x} = [x_1, x_2, ..., x_n]\)</span></p>
+<p>The weight vector:</p>
+<p><span class="math notranslate nohighlight">\(\boldsymbol{w} = [w_1, w_2, ..., w_n]\)</span></p>
+<p>Mathematically, the weighted sum is calculated as:</p>
+<p><span class="math notranslate nohighlight">\(z = \boldsymbol{w}^T\boldsymbol{x} = w_1 * x_1 + w_2 * x_2 + ... + w_n * x_n\)</span></p>
+<p>We then add the bias term <span class="math notranslate nohighlight">\(b\)</span> as:</p>
+<p><span class="math notranslate nohighlight">\(z = \boldsymbol{w}^T\boldsymbol{x} + b\)</span></p>
+<p>Where <span class="math notranslate nohighlight">\(z\)</span> is the pre-activation value before applying the nonlinear activation function.</p>
+<p>Here is a simple Numpy function that implements a perceptron:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> 
+
+<span class="c1"># Perceptron function</span>
+<span class="k">def</span> <span class="nf">perceptron</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>  
+  <span class="c1"># Calculate weighted sum</span>
+  <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span> 
+  <span class="k">return</span> <span class="n">z</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>      <span class="c1"># Example inputs   </span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">3.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">])</span>  <span class="c1"># Example weights </span>
+<span class="n">b</span> <span class="o">=</span> <span class="mf">1.0</span>                    <span class="c1"># Example bias    </span>
+
+<span class="c1"># Generate prediction</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">perceptron</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+
+<span class="c1"># Print prediction</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Prediction: </span><span class="si">%.3f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">y</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Prediction: -6.000
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="nonlinear-activation-function">
+<h2>Nonlinear Activation Function<a class="headerlink" href="#nonlinear-activation-function" title="Permalink to this heading">#</a></h2>
+<p>Activation functions are an important component of artificial neural networks. They introduce non-linearity into the network, allowing it to learn complex patterns in data. Without activation functions, a neural network would essentially be just a linear regression model.</p>
+<p><img alt="Why we need activation functions" src="../_images/why-activation.png" /></p>
+<blockquote>
+<div><p>Credits: Alexander Amini, MIT</p>
+</div></blockquote>
+<p>Some common activation functions include:</p>
+<p><strong>Sigmoid</strong></p>
+<p>The sigmoid function squashes the input into a range between 0 and 1, and is useful for models where we want to predict a probability as output. A downside is it can saturate and cause vanishing gradients.</p>
+<div class="math notranslate nohighlight">
+\[ \sigma(x) = \frac{1}{1 + e^{-x}} \]</div>
+<p>Use Sigmoid for binary classification problems where the output should be a probability between 0-1. Also useful as the output layer for multi-class classification.</p>
+<p><strong>Tanh</strong></p>
+<p>The tanh function squashes the input into a range between -1 and 1. It is a rescaled version of the sigmoid function. Like sigmoid, it can saturate.</p>
+<div class="math notranslate nohighlight">
+\[\tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}} \]</div>
+<p>Use <code class="docutils literal notranslate"><span class="pre">Tanh</span></code> for models where you want your outputs centered around 0. Often used in recurrent neural networks.</p>
+<p>Here is some Python code to plot these activation functions using numpy and matplotlib:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+
+<span class="c1"># Sigmoid activation function</span>
+<span class="n">sigmoid</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">))</span>
+
+<span class="c1"># Tanh activation function</span>
+<span class="n">tanh</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">))</span> 
+
+<span class="c1"># Plot the activation functions</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">sigmoid</span><span class="p">,</span> <span class="s1">&#39;r.&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Sigmoid&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">tanh</span><span class="p">,</span> <span class="s1">&#39;b-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Tanh&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Activation&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Activation Functions&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="c1"># Sigmoid activation function</span>
+
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;matplotlib&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>ReLU</strong> The Rectified Linear Unit (ReLU) thresholds the input at zero, returning 0 for negative values and the raw input for positive values. It helps avoid vanishing gradients and is computationally efficient. However, it has a problem with “dying” neurons if inputs are consistently negative. For example, if a neuron in the first layer learns weights that result in a negative input, it will output 0. In backpropagation, since the gradient of the ReLU function is 0 for negative inputs, this neuron will not update its weights. Over time it will not activate on any data and is considered “dead”.</p>
+<p>This limits the model capacity as neurons can effectively die and remain inactive for the rest of training. LeakyReLU solves this by having a small negative slope (e.g. 0.01x), so even when inputs are negative it will propagate some gradient to update weights.</p>
+<div class="math notranslate nohighlight">
+\[ f(x) = \max(0, x)\]</div>
+<p>Use ReLU for hidden layers in networks where your inputs are always positive. It trains faster than sigmoid/tanh.</p>
+<p><strong>LeakyReLU</strong></p>
+<p>The Leaky ReLU introduces a small slope (e.g. 0.01x) for negative values instead of threshholding at zero. This helps solve the “dying neuron” problem of ReLU units. The small negative slope avoids saturation while keeping gradients flowing even for negative regions.</p>
+<div class="math notranslate nohighlight">
+\[f(x) = \max(\alpha x, x)\]</div>
+<p>Use LeakyReLU as a general purpose activation function that avoids both saturation and dying neurons.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+
+<span class="c1"># ReLU activation function</span>
+<span class="n">relu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+
+<span class="c1"># LeakyReLU activation function</span>
+<span class="n">leaky_relu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">0.1</span><span class="o">*</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+
+<span class="c1"># Plot the activation functions</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">relu</span><span class="p">,</span> <span class="s1">&#39;g--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;ReLU&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">leaky_relu</span><span class="p">,</span> <span class="s1">&#39;r*&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;LeakyReLU&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Activation&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Activation Functions&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/921bfb0aeb0eb918e0e54d18f36883a27e3f461bef279c1858b3410b8144c92b.png" src="../_images/921bfb0aeb0eb918e0e54d18f36883a27e3f461bef279c1858b3410b8144c92b.png" />
+</div>
+</div>
+<section id="single-layer-neural-network">
+<h3>Single-Layer Neural Network<a class="headerlink" href="#single-layer-neural-network" title="Permalink to this heading">#</a></h3>
+<p>A single layer neural network, also known as a perceptron, is the simplest type of neural network. It consists of a single layer of input nodes fully connected to a layer of output nodes.</p>
+<p>Let’s now focus on a single neuron <span class="math notranslate nohighlight">\(z_2\)</span>. Here <span class="math notranslate nohighlight">\(z_2\)</span> takes the weighted inputs from <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> added to the bias term.</p>
+<div class="math notranslate nohighlight">
+\[z_2 = b_2^{(1)} + \sum_{j=1}^m w_{j,2}^{(1)} x_j = b_2^{(1)} + w_{1,2}^{(1)}x_1 + w_{2,2}^{(1)}x_2 + w_{m,2}^{(1)}x_m\]</div>
+<p><img alt="Single layer NN" src="../_images/single-layer-nn1.png" /></p>
+<p>Hidden layers are layers in a neural network that sit between the input layer and the output layer. While the input and output layers connect to the external world, hidden layers only connect to other neurons within the network.</p>
+<p>Hidden layers enable neural networks to learn more complex relationships between inputs and outputs. Specifically, hidden layers allow the network to model nonlinear relationships, which is crucial for solving more difficult problems.</p>
+<p>The power of deep neural networks comes from having multiple hidden layers. Each layer transforms the representation of the data into a slightly more abstract representation. With enough layers, very complex functions can be modeled.</p>
+<p>The number of hidden layers and neurons per layer are part of the neural network architecture. Tuning the hidden layer structure is an important part of applying neural networks to a problem.</p>
+<p>We define a hidden layer as:</p>
+<div class="math notranslate nohighlight">
+\[z_2 = b_i^{(1)} + \sum_{j=1}^m w_{j,i}^{(1)} x_j\]</div>
+<p>Final output:</p>
+<div class="math notranslate nohighlight">
+\[\hat{y}_i = g(b_i^{(2)} + \sum_{j=1}^{d_1} w_{j,i}^{(2)} g(z_j))\]</div>
+<p><img alt="Single layer NN" src="../_images/single-layer-nn2.png" /></p>
+</section>
+</section>
+<section id="training-a-neural-network">
+<h2>Training a neural network<a class="headerlink" href="#training-a-neural-network" title="Permalink to this heading">#</a></h2>
+<p>Neural networks are trained using an optimization algorithm that iteratively updates the network’s weights and biases to minimize a loss function. The loss function measures how far the network’s predictions are from the true target outputs in the training data. It is a measure of the model’s error.</p>
+<p>Some common loss functions include:</p>
+<ul class="simple">
+<li><p>Mean squared error (MSE) - The average of the squared differences between the predicted and actual values. Measures the square of the error. Used for regression problems.</p></li>
+<li><p>Cross-entropy loss - Measures the divergence between the predicted class probabilities and the true distribution. Used for classification problems. Penalizes confident incorrect predictions.</p></li>
+<li><p>Hinge loss - Used for Support Vector Machines classifiers. Penalizes predictions that are on the wrong side of the decision boundary.</p></li>
+</ul>
+<p>Loss optimization is the process of finding the network weights that acheives the lowest loss.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split} 
+\begin{align}
+\boldsymbol{w^*} &amp;= \argmin_{\boldsymbol{w}}\frac{1}{n}\sum_{i=1}^n \mathcal{L}(f(x^{(i)};\boldsymbol{w}),y^{(i)})\\
+\boldsymbol{w^*} &amp;= \argmin_{\boldsymbol{w}} J(\boldsymbol{w})
+\end{align}
+\end{split}\]</div>
+<p>The training process works like this:</p>
+<ol class="arabic simple">
+<li><p><strong>Initialization</strong>: The weights and biases of the network are initialized, often with small random numbers.</p></li>
+<li><p><strong>Forward Pass</strong>: The input is passed through the network, layer by layer, applying the necessary transformations (e.g., linear combinations of weights and inputs followed by activation functions) until an output is obtained.</p></li>
+<li><p><strong>Calculate Loss</strong>: A loss function is used to quantify the difference between the predicted output and the actual target values.</p></li>
+<li><p><strong>Backward Pass (Backpropagation)</strong>: The gradients of the loss with respect to the parameters (weights and biases) are computed using the chain rule for derivatives. This process is known as backpropagation.</p></li>
+<li><p><strong>Update Parameters</strong>: The gradients computed in the backward pass are used to update the parameters of the network, typically using optimization algorithms like stochastic gradient descent (SGD) or more sophisticated ones like Adam. The update is done in the direction that minimizes the loss.</p></li>
+<li><p><strong>Repeat</strong>: Steps 2-5 are repeated using the next batch of data until a stopping criterion is met, such as a set number of epochs (full passes through the training dataset) or convergence to a minimum loss value.</p></li>
+<li><p><strong>Validation</strong>: The model is evaluated on a separate validation set to assess its generalization to unseen data.</p></li>
+</ol>
+<section id="gradient-descent">
+<h3>Gradient Descent<a class="headerlink" href="#gradient-descent" title="Permalink to this heading">#</a></h3>
+<p>Gradient Descent is a first-order iterative optimization algorithm used to find the minimum of a differentiable function. In the context of training a neural network, we are trying to minimize the loss function.</p>
+<ol class="arabic simple">
+<li><p><strong>Initialize Parameters</strong>:</p></li>
+</ol>
+<p>Choose an initial point (i.e., initial values for the weights and biases) in the parameter space, and set a learning rate that determines the step size in each iteration.</p>
+<ol class="arabic simple" start="2">
+<li><p><strong>Compute the Gradient</strong>:</p></li>
+</ol>
+<p>Calculate the gradient of the loss function with respect to the parameters at the current point. The gradient is a vector that points in the direction of the steepest increase of the function. It is obtained by taking the partial derivatives of the loss function with respect to each parameter.</p>
+<ol class="arabic simple" start="3">
+<li><p><strong>Update Parameters</strong>:</p></li>
+</ol>
+<p>Move in the opposite direction of the gradient by a distance proportional to the learning rate. This is done by subtracting the gradient times the learning rate from the current parameters:</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{w} = \boldsymbol{w} - \eta \nabla J(\boldsymbol{w})\]</div>
+<p>Here, <span class="math notranslate nohighlight">\(\boldsymbol{w}\)</span> represents the parameters, <span class="math notranslate nohighlight">\(\eta\)</span> is the learning rate, and <span class="math notranslate nohighlight">\(\nabla J (\boldsymbol{w})\)</span> is the gradient of the loss function <span class="math notranslate nohighlight">\(J\)</span> with respect to <span class="math notranslate nohighlight">\(\boldsymbol{w}\)</span>.</p>
+<ol class="arabic simple" start="4">
+<li><p><strong>Repeat</strong>:</p></li>
+</ol>
+<p>Repeat steps 2 and 3 until the change in the loss function falls below a predefined threshold, or a maximum number of iterations is reached.</p>
+<section id="algorithm">
+<h4>Algorithm:<a class="headerlink" href="#algorithm" title="Permalink to this heading">#</a></h4>
+<ol class="arabic simple">
+<li><p>Initialize weights randomly <span class="math notranslate nohighlight">\(\sim \mathcal{N}(0, \sigma^2)\)</span></p></li>
+<li><p>Loop until convergence</p></li>
+<li><p>Compute gradient, <span class="math notranslate nohighlight">\(\frac{\partial J(\boldsymbol{w})}{\partial \boldsymbol{w}}\)</span></p></li>
+<li><p>Update weights, <span class="math notranslate nohighlight">\(\boldsymbol{w} \leftarrow \boldsymbol{w} - \eta \frac{\partial J(\boldsymbol{w})}{\partial \boldsymbol{w}}\)</span></p></li>
+<li><p>Return weights</p></li>
+</ol>
+<p><img alt="SGD" src="../_images/sgd.gif" /></p>
+<p>Assuming a loss function is mean squared error (MSE). Let’s compute the gradient of the loss with respect to the input weights.</p>
+<p>The loss function is mean squared error:</p>
+<div class="math notranslate nohighlight">
+\[\text{loss} = \frac{1}{n}\sum_{i=1}^{n}(y_i - \hat{y}_i)^2\]</div>
+<p>Where <span class="math notranslate nohighlight">\(y_i\)</span> are the true target and <span class="math notranslate nohighlight">\(\hat{y}_i\)</span> are the predicted values.</p>
+<p>To minimize this loss, we need to compute the gradients with respect to the weights <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> and bias <span class="math notranslate nohighlight">\(b\)</span>:</p>
+<p>Using the chain rule, the gradient of the loss with respect to the weights is:
+$<span class="math notranslate nohighlight">\(\frac{\partial \text{loss}}{\partial \mathbf{w}} = \frac{2}{n}\sum_{i=1}^{n}(y_i - \hat{y}_i) \frac{\partial y_i}{\partial \mathbf{w}}\)</span>$</p>
+<p>The term inside the sum is the gradient of the loss with respect to the output <span class="math notranslate nohighlight">\(y_i\)</span>, which we called <span class="math notranslate nohighlight">\(\text{grad\_output}\)</span>:
+$<span class="math notranslate nohighlight">\(\text{grad\_output} = \frac{2}{n}\sum_{i=1}^{n}(y_i - \hat{y}_i)\)</span>$</p>
+<p>The derivative <span class="math notranslate nohighlight">\(\frac{\partial y_i}{\partial \mathbf{w}}\)</span> is just the input <span class="math notranslate nohighlight">\(\mathbf{x}_i\)</span> multiplied by the derivative of the activation. For simplicity, let’s assume linear activation, so this is just <span class="math notranslate nohighlight">\(\mathbf{x}_i\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\therefore \frac{\partial \text{loss}}{\partial \mathbf{w}} = \mathbf{X}^T\text{grad\_output}\]</div>
+<p>The gradient for the bias is simpler:
+$<span class="math notranslate nohighlight">\(\frac{\partial \text{loss}}{\partial b} = \sum_{i=1}^{n}\text{grad\_output}_i\)</span>$</p>
+<p>Finally, we update the weights and bias by gradient descent:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{w} = \mathbf{w} - \eta \frac{\partial \text{loss}}{\partial \mathbf{w}}\]</div>
+<div class="math notranslate nohighlight">
+\[b = b - \eta \frac{\partial \text{loss}}{\partial b}\]</div>
+<p>Where <span class="math notranslate nohighlight">\(\eta\)</span> is the learning rate.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># training the neural network with gradient-based optimization</span>
+<span class="n">epochs</span> <span class="o">=</span> <span class="mi">1000</span>       <span class="c1"># Number of iterations</span>
+<span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.1</span> <span class="c1"># eta</span>
+
+<span class="c1"># Training loop</span>
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+    <span class="c1"># Forward pass</span>
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">bingham_nn</span><span class="p">(</span><span class="n">v_values</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">bias</span><span class="p">)</span>
+    <span class="c1"># Compute loss as MSE</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="p">((</span><span class="n">y_pred</span> <span class="o">-</span> <span class="n">y_true</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    
+    <span class="c1"># Compute gradients</span>
+    <span class="n">grad_output</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">y_pred</span> <span class="o">-</span> <span class="n">y_true</span><span class="p">)</span> <span class="o">/</span> <span class="n">num_samples</span>
+    <span class="n">grad_weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v_values</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">grad_output</span><span class="p">)</span>
+    <span class="n">grad_bias</span> <span class="o">=</span> <span class="n">grad_output</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+    <span class="c1"># Update weights using gradient descent</span>
+    <span class="n">weights</span> <span class="o">-=</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">grad_weights</span>
+    <span class="n">bias</span> <span class="o">-=</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">grad_bias</span>
+</pre></div>
+</div>
+</section>
+<section id="variants">
+<h4>Variants:<a class="headerlink" href="#variants" title="Permalink to this heading">#</a></h4>
+<p>There are several variants of Gradient Descent that modify or enhance these basic steps, including:</p>
+<ul class="simple">
+<li><p><strong>Stochastic Gradient Descent (SGD)</strong>: Instead of using the entire dataset to compute the gradient, SGD uses a single random data point (or small batch) at each iteration. This adds noise to the gradient but often speeds up convergence and can escape local minima.</p></li>
+<li><p><strong>Momentum</strong>: Momentum methods use a moving average of past gradients to dampen oscillations and accelerate convergence, especially in cases where the loss surface has steep valleys.</p></li>
+<li><p><strong>Adaptive Learning Rate Methods</strong>: Techniques like Adagrad, RMSprop, and Adam adjust the learning rate individually for each parameter, often leading to faster convergence.</p></li>
+</ul>
+</section>
+<section id="limitations">
+<h4>Limitations:<a class="headerlink" href="#limitations" title="Permalink to this heading">#</a></h4>
+<ul class="simple">
+<li><p>It may converge to a local minimum instead of a global minimum if the loss surface is not convex.</p></li>
+<li><p>Convergence can be slow if the learning rate is not properly tuned.</p></li>
+<li><p>Sensitive to the scaling of features; poorly scaled data can cause the gradient descent to take a long time to converge or even diverge.</p></li>
+</ul>
+</section>
+</section>
+<section id="pytorch-version-of-bingham-model">
+<h3>PyTorch version of Bingham Model<a class="headerlink" href="#pytorch-version-of-bingham-model" title="Permalink to this heading">#</a></h3>
+<p>PyTorch is a popular open source machine learning library for Python developed by Facebook. It is used for building and training deep neural networks. Here is how to construct a simple neural network with PyTorch:</p>
+<p>First, import PyTorch:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
+</pre></div>
+</div>
+<p>Define the neural network class inheriting from <code class="docutils literal notranslate"><span class="pre">nn.Module</span></code>. In the constructor initialize the layers:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Net</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Net</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">relu</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">x</span>
+</pre></div>
+</div>
+<p>Alternatively, we can also define a new network using a single equivalent line as:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Net</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>This creates a simple neural net with 1 fully connected layer and a non-linear activation function ReLU.</p>
+<p>Then create the model instance and set the loss function and optimizer:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">Net</span><span class="p">()</span>
+<span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">MSE</span><span class="p">()</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>That’s it! We now have a simple single layer neural network defined in PyTorch. To train it on data we need to loop through datasets, perform forward passes, compute loss, backpropagate and update weights.</p>
+</section>
+</section>
+<section id="neural-network-example">
+<h2>Neural Network Example<a class="headerlink" href="#neural-network-example" title="Permalink to this heading">#</a></h2>
+<blockquote>
+<div><p>Deflection of a cantilever beam</p>
+</div></blockquote>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># Set random seed for reproducibility</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">manual_seed_all</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>  <span class="c1"># For GPU computation</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">backends</span><span class="o">.</span><span class="n">cudnn</span><span class="o">.</span><span class="n">deterministic</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Disable cuDNN&#39;s heuristics for convolutions</span>
+
+<span class="c1"># Parameters</span>
+<span class="n">P</span> <span class="o">=</span> <span class="mi">1000</span>  <span class="c1"># Load (N)</span>
+<span class="n">L</span> <span class="o">=</span> <span class="mi">5</span>     <span class="c1"># Beam length (m)</span>
+<span class="n">E</span> <span class="o">=</span> <span class="mf">200e9</span> <span class="c1"># Young&#39;s modulus (Pa)</span>
+<span class="n">I</span> <span class="o">=</span> <span class="mf">1e-5</span>  <span class="c1"># Moment of inertia (m^4)</span>
+
+<span class="c1"># Generate data</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>  <span class="c1"># Distance from fixed end</span>
+<span class="n">y_true</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">P</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">6</span> <span class="o">*</span> <span class="n">E</span> <span class="o">*</span> <span class="n">I</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">L</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span>  <span class="c1"># True deflection</span>
+<span class="n">y_noisy</span> <span class="o">=</span> <span class="n">y_true</span> <span class="o">+</span> <span class="mf">1e-3</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>  <span class="c1"># Add noise</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># PyTorch model</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Add batch dimension</span>
+
+<span class="n">nparams</span> <span class="o">=</span> <span class="mi">16</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">nparams</span><span class="p">),</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Tanh</span><span class="p">(),</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">nparams</span><span class="p">,</span> <span class="n">nparams</span><span class="p">),</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Tanh</span><span class="p">(),</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">nparams</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">model</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sequential(
+  (0): Linear(in_features=1, out_features=16, bias=True)
+  (1): Tanh()
+  (2): Linear(in_features=16, out_features=16, bias=True)
+  (3): Tanh()
+  (4): Linear(in_features=16, out_features=1, bias=True)
+)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Loss function and optimizer</span>
+<span class="n">criterion</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">MSELoss</span><span class="p">()</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+
+<span class="c1"># Training loop</span>
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1500</span><span class="p">):</span>
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">y_noisy</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+    <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">epoch</span> <span class="o">%</span> <span class="mi">500</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Epoch </span><span class="si">{</span><span class="n">epoch</span><span class="si">}</span><span class="s1">, Loss: </span><span class="si">{</span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s1">.2e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1"># Plot data and model fit</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_noisy</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Noisy data&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_true</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;True deflection&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Model fit&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Distance from fixed end (m)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Deflection (m)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0, Loss: 8.65e-07
+Epoch 500, Loss: 8.49e-07
+Epoch 1000, Loss: 8.46e-07
+</pre></div>
+</div>
+<img alt="../_images/ddde4416cc864339fca001c856439a0909e8bc165c88e6839399692e2c80820c.png" src="../_images/ddde4416cc864339fca001c856439a0909e8bc165c88e6839399692e2c80820c.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Optimizer</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">)</span>
+
+<span class="c1"># physics loss function</span>
+<span class="k">def</span> <span class="nf">physics_loss</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">y_noisy</span><span class="p">):</span>
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">y_pred</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+    <span class="n">y_noisy</span> <span class="o">=</span> <span class="n">y_noisy</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+    
+    <span class="c1"># Weight</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="mi">10</span>
+    
+    <span class="c1"># Data loss</span>
+    <span class="n">data_loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">y_pred</span> <span class="o">-</span> <span class="n">y_noisy</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1"># Physics loss (enforce zero deflection at x=0)</span>
+    <span class="n">boundary_loss</span> <span class="o">=</span> <span class="n">y_pred</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span>
+
+    <span class="k">return</span> <span class="n">data_loss</span> <span class="o">+</span> <span class="n">boundary_loss</span> <span class="o">*</span> <span class="n">alpha</span>
+
+<span class="n">losses</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="c1"># Training loop</span>
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1500</span><span class="p">):</span>
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">physics_loss</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">y_noisy</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+    <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+    <span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+
+    <span class="k">if</span> <span class="n">epoch</span> <span class="o">%</span> <span class="mi">500</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Epoch </span><span class="si">{</span><span class="n">epoch</span><span class="si">}</span><span class="s1">, Loss: </span><span class="si">{</span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s1">.2e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">losses</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Epoch&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Loss&#39;</span><span class="p">)</span>
+<span class="c1"># set y-axis to log scale</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Loss Evolution&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0, Loss: 8.70e-07
+Epoch 500, Loss: 8.71e-07
+Epoch 1000, Loss: 8.68e-07
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Loss Evolution&#39;)
+</pre></div>
+</div>
+<img alt="../_images/ac178408a1ce7f505732ea06f0aadfe8156bc1701d075c28a91fc7f5224aed41.png" src="../_images/ac178408a1ce7f505732ea06f0aadfe8156bc1701d075c28a91fc7f5224aed41.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot data and model fit</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_noisy</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Noisy data&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_true</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;True deflection&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Model fit&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Distance from fixed end (m)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Deflection (m)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/9c64f9642e8c70639eb9a6ccecca30132f01727e0b2e2041a638a8101ea53c2c.png" src="../_images/9c64f9642e8c70639eb9a6ccecca30132f01727e0b2e2041a638a8101ea53c2c.png" />
+</div>
+</div>
+<p>Hyperparameters are values that we set before beginning the training process. They guide the learning process and differ from model parameters, which are learned from the training data. Below are some key hyperparameters:</p>
+<ol class="arabic simple">
+<li><p><strong>Learning Rate</strong>: This hyperparameter controls the step size when updating the model’s weights. If you set it too low, the model converges slowly. If you set it too high, the learning process might diverge.</p></li>
+<li><p><strong>Batch Size</strong>: This defines the number of training examples you use in one iteration to update the model’s weights. A smaller batch size typically leads to a regularizing effect and lower generalization error, while a larger batch size results in faster training but may converge to a suboptimal solution.</p></li>
+<li><p><strong>Number of Epochs</strong>: You set the number of epochs to define how many times the learning algorithm will work through the entire training dataset. An epoch is a full pass through all training samples.</p></li>
+<li><p><strong>Regularization Parameters</strong>: If you apply regularization techniques like L1 or L2, you must set the strength of the penalty as a hyperparameter. Regularization adds penalties to the model parameters to prevent overfitting.</p></li>
+<li><p><strong>Optimization Algorithm</strong>: You choose the optimization algorithm (e.g., SGD, Adam, RMSProp) and its specific parameters (e.g., momentum) as hyperparameters.</p></li>
+<li><p><strong>Network Architecture</strong>: The structure of the neural network, including the number of hidden layers, the number of units in each layer, the activation functions, etc., is determined by hyperparameters that you set.</p></li>
+<li><p><strong>Initialization</strong>: You decide how to set the model’s weights before training, significantly affecting learning. Choices like Xavier or He initialization have corresponding hyperparameters you must set.</p></li>
+<li><p><strong>Early Stopping</strong>: You can also set parameters related to when to stop training, such as if the validation error stops improving. These choices are considered hyperparameters.</p></li>
+</ol>
+<p>Hyperparameters play a vital role in the behavior and performance of a learning algorithm. Finding the best set of hyperparameters, a process called hyperparameter tuning or optimization is essential in training an effective model. Methods for hyperparameter tuning include grid search, random search, Bayesian optimization, and others.</p>
+<blockquote>
+<div><p>💡 Try to change the hyperparameters (learning rate, number of layers in the neural network and activation function) to reduce the error.</p>
+</div></blockquote>
+<blockquote>
+<div><p>📖 Reading Activity: <a class="reference external" href="https://pair.withgoogle.com/explorables/grokking/">Do ML models memorize or generalize?</a></p>
+</div></blockquote>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./00-perceptron"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../README.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Physics Informed Machine Learning</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../01-pinn/01-pinn.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">01: Physics-Informed Neural Networks (PINNs)</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#weights-and-biases">Weights and biases</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nonlinear-activation-function">Nonlinear Activation Function</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#single-layer-neural-network">Single-Layer Neural Network</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training-a-neural-network">Training a neural network</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gradient-descent">Gradient Descent</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#algorithm">Algorithm:</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#variants">Variants:</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations">Limitations:</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pytorch-version-of-bingham-model">PyTorch version of Bingham Model</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neural-network-example">Neural Network Example</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Krishna Kumar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
