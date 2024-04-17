@@ -684,15 +684,18 @@ every single neural network and that’s going to be just a single neuron and in
 \[\text{loss} = \frac{1}{n}\sum_{i=1}^{n}(y_i - \hat{y}_i)^2\]</div>
 <p>Where <span class="math notranslate nohighlight">\(y_i\)</span> are the true target and <span class="math notranslate nohighlight">\(\hat{y}_i\)</span> are the predicted values.</p>
 <p>To minimize this loss, we need to compute the gradients with respect to the weights <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> and bias <span class="math notranslate nohighlight">\(b\)</span>:</p>
-<p>Using the chain rule, the gradient of the loss with respect to the weights is:
-$<span class="math notranslate nohighlight">\(\frac{\partial \text{loss}}{\partial \mathbf{w}} = \frac{2}{n}\sum_{i=1}^{n}(y_i - \hat{y}_i) \frac{\partial y_i}{\partial \mathbf{w}}\)</span>$</p>
-<p>The term inside the sum is the gradient of the loss with respect to the output <span class="math notranslate nohighlight">\(y_i\)</span>, which we called <span class="math notranslate nohighlight">\(\mathrm{grad\_output}\)</span>:
-$<span class="math notranslate nohighlight">\(\mathrm{grad\_output} = \frac{2}{n}\sum_{i=1}^{n}(y_i - \hat{y}_i)\)</span>$</p>
+<p>Using the chain rule, the gradient of the loss with respect to the weights is:</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial \text{loss}}{\partial \mathbf{w}} = \frac{2}{n}\sum_{i=1}^{n}(y_i - \hat{y}_i) \frac{\partial y_i}{\partial \mathbf{w}}\]</div>
+<p>The term inside the sum is the gradient of the loss with respect to the output <span class="math notranslate nohighlight">\(y_i\)</span>, which we called <span class="math notranslate nohighlight">\(\mathrm{grad\_output}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{grad\_output} = \frac{2}{n}\sum_{i=1}^{n}(y_i - \hat{y}_i)\]</div>
 <p>The derivative <span class="math notranslate nohighlight">\(\frac{\partial y_i}{\partial \mathbf{w}}\)</span> is just the input <span class="math notranslate nohighlight">\(\mathbf{x}_i\)</span> multiplied by the derivative of the activation. For simplicity, let’s assume linear activation, so this is just <span class="math notranslate nohighlight">\(\mathbf{x}_i\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[\therefore \frac{\partial \text{loss}}{\partial \mathbf{w}} = \mathbf{X}^T\mathrm{grad\_output}\]</div>
-<p>The gradient for the bias is simpler:
-$<span class="math notranslate nohighlight">\(\frac{\partial \text{loss}}{\partial b} = \sum_{i=1}^{n}\mathrm{grad\_output}_i\)</span>$</p>
+<p>The gradient for the bias is simpler:</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial \text{loss}}{\partial b} = \sum_{i=1}^{n}\mathrm{grad\_output}_i\]</div>
 <p>Finally, we update the weights and bias by gradient descent:</p>
 <div class="math notranslate nohighlight">
 \[\mathbf{w} = \mathbf{w} - \eta \frac{\partial \text{loss}}{\partial \mathbf{w}}\]</div>
@@ -872,12 +875,12 @@ $<span class="math notranslate nohighlight">\(\frac{\partial \text{loss}}{\parti
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0, Loss: 3.03e-03
-Epoch 500, Loss: 1.26e-06
-Epoch 1000, Loss: 1.13e-06
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0, Loss: 8.99e-07
+Epoch 500, Loss: 9.33e-07
+Epoch 1000, Loss: 8.63e-07
 </pre></div>
 </div>
-<img alt="../_images/1a10242c92597ddb82453a6e11892c55553e38794b593e5589d2573af06e47c4.png" src="../_images/1a10242c92597ddb82453a6e11892c55553e38794b593e5589d2573af06e47c4.png" />
+<img alt="../_images/a9863e02acc972d04991f62a772752ffb051ef97b2a56217cd8a5db794f12672.png" src="../_images/a9863e02acc972d04991f62a772752ffb051ef97b2a56217cd8a5db794f12672.png" />
 </div>
 </div>
 </section>
@@ -930,7 +933,9 @@ Epoch 1000, Loss: 1.13e-06
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0, Loss: 1.13e-06
-Epoch 500, Loss: 1.03e-06
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 500, Loss: 1.03e-06
 Epoch 1000, Loss: 1.01e-06
 </pre></div>
 </div>
