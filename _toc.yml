@@ -1,0 +1,9 @@
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+format: jb-book
+root: README
+chapters:
+  - file: lectures/01-pinn/01-pinn
+  - file: lectures/02-pinn-ode/02-pinn-ode
+  - file: lectures/03-burgers/03-burgers
