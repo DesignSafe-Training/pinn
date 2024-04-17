@@ -5,5 +5,5 @@ format: jb-book
 root: README
 chapters:
   - file: 01-pinn/01-pinn
-  - file: 02-pinn-heat-transfer/02-heat-transfer
+  - file: 02-pinn-heat-transfer/02-pinn-heat-transfer
   - file: 03-burgers/03-burgers
