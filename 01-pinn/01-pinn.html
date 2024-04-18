@@ -550,14 +550,16 @@ Requirement already satisfied: platformdirs&gt;=2.5 in /opt/homebrew/Caskroom/mi
 </div>
 </div>
 </div>
-<p>Once the networks are initialized, we set up the optimization problem and train the network by minimizing an objective function, i.e. solving the optimization problem for <span class="math notranslate nohighlight">\(W\)</span> and <span class="math notranslate nohighlight">\(b\)</span>. The optimization problem for a data-driven curve-fitting is defined as:
-$<span class="math notranslate nohighlight">\(
-\text{arg min}_{W,b} \mathcal{L}(W, b) := \left\| f(x^*, y^*) - \mathcal{N}_f(x^*, y^*; W, b) \right\|
-\)</span><span class="math notranslate nohighlight">\(
-where \)</span>x^<em>, y^</em><span class="math notranslate nohighlight">\( is the set of all discrete points where \)</span>f<span class="math notranslate nohighlight">\( is given. For the loss-function \)</span>\left| \circ \right|<span class="math notranslate nohighlight">\(, we use the mean squared-error norm
-\)</span><span class="math notranslate nohighlight">\(
+<p>Once the networks are initialized, we set up the optimization problem and train the network by minimizing an objective function, i.e. solving the optimization problem for <span class="math notranslate nohighlight">\(W\)</span> and <span class="math notranslate nohighlight">\(b\)</span>. The optimization problem for a data-driven curve-fitting is defined as:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{arg min}_{W,b} \mathcal{L}(W, b) := \left\| f(x^*, y^*) - \mathcal{N}_f(x^*, y^*; W, b) \right\|
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(x^*, y^*\)</span> is the set of all discrete points where <span class="math notranslate nohighlight">\(f\)</span> is given. For the loss-function <span class="math notranslate nohighlight">\(\left\| \circ \right\|\)</span>, we use the mean squared-error norm</p>
+<div class="math notranslate nohighlight">
+\[
 \left\| \circ \right\| = \frac{1}{N} \sum_{x^*, y^* \in I} \left( f(x^*, y^*) - \hat{f}(x^*, y^*) \right)^2.
-\)</span>$</p>
+\]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define loss function and optimizer</span>
@@ -769,7 +771,7 @@ where \)</span>x^<em>, y^</em><span class="math notranslate nohighlight">\( is t
 <li><p><strong>Data Efficiency</strong>: By using physical constraints, PINNs can provide accurate predictions with fewer data points, mitigating the need for extensive data collection.</p></li>
 <li><p><strong>Solving PDEs</strong>: PINNs can be applied to solve complex boundary value problems (BVPs) and initial value problems (IVPs) described by PDEs, without the need for traditional discretization methods.</p></li>
 </ul>
-<p><img alt="PINN" src="../_images/pinn.png" /></p>
+<p><img alt="PINN" src="https://raw.githubusercontent.com/DesignSafe-Training/pinn/main/01-pinn/pinn.png" /></p>
 <blockquote>
 <div><p>Schematic of a physics-informed neural network (PINN), where the loss function of PINN contains a mismatch in the given data on the state variables or boundary and initial conditions, i.e., <span class="math notranslate nohighlight">\(MSE_{u,BC,IC}\)</span>, and the residual for the PDE on a set of random points in the time-space domain, i.e., <span class="math notranslate nohighlight">\(MSE_R\)</span>. The hyperparameters of PINN can be learned by minimizing the total loss <span class="math notranslate nohighlight">\(MSE = MSE_{u,BC,IC} + MSE_R\)</span>.</p>
 </div></blockquote>

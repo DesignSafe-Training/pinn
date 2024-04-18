@@ -525,15 +525,10 @@ Requirement already satisfied: platformdirs&gt;=2.5 in /opt/homebrew/Caskroom/mi
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">StandardNN</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">StandardNN</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        
-
-    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-        
 
 
 <span class="c1"># Define model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">StandardNN</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -551,8 +546,11 @@ where \)</span>x^<em>, y^</em><span class="math notranslate nohighlight">\( is t
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define loss function and optimizer</span>
 
 
-<span class="c1"># Training loop</span>
+<span class="n">losses</span> <span class="o">=</span> <span class="p">[]</span>
 
+<span class="c1"># Training loop</span>
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">5000</span><span class="p">),</span> <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;Data-driven model training progress&#39;</span><span class="p">):</span>
+    
 
 <span class="c1"># Plot the loss on a semilog scale</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
@@ -734,7 +732,7 @@ where \)</span>x^<em>, y^</em><span class="math notranslate nohighlight">\( is t
 <li><p><strong>Data Efficiency</strong>: By using physical constraints, PINNs can provide accurate predictions with fewer data points, mitigating the need for extensive data collection.</p></li>
 <li><p><strong>Solving PDEs</strong>: PINNs can be applied to solve complex boundary value problems (BVPs) and initial value problems (IVPs) described by PDEs, without the need for traditional discretization methods.</p></li>
 </ul>
-<p><img alt="PINN" src="../_images/pinn.png" /></p>
+<p><img alt="PINN" src="https://raw.githubusercontent.com/DesignSafe-Training/pinn/main/01-pinn/pinn.png" /></p>
 <blockquote>
 <div><p>Schematic of a physics-informed neural network (PINN), where the loss function of PINN contains a mismatch in the given data on the state variables or boundary and initial conditions, i.e., <span class="math notranslate nohighlight">\(MSE_{u,BC,IC}\)</span>, and the residual for the PDE on a set of random points in the time-space domain, i.e., <span class="math notranslate nohighlight">\(MSE_R\)</span>. The hyperparameters of PINN can be learned by minimizing the total loss <span class="math notranslate nohighlight">\(MSE = MSE_{u,BC,IC} + MSE_R\)</span>.</p>
 </div></blockquote>
