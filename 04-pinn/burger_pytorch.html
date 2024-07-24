@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>This is a notebook to train a Physics Informed Neural Network on Burger’s equation &#8212; Physics Informed Machine Learning</title>
+    <title>PINNs Burger’s equation &#8212; Physics Informed Machine Learning</title>
   
   
   
@@ -182,7 +182,7 @@ const thebe_selector_output = ".output, .cell_output"
 
 
 
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">This is a notebook to train a Physics Informed Neural Network on Burger’s equation</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">PINNs Burger’s equation</a></li>
 </ul>
 
     </div>
@@ -399,7 +399,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>This is a notebook to train a Physics Informed Neural Network on Burger’s equation</h1>
+    <h1>PINNs Burger’s equation</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -426,8 +426,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="this-is-a-notebook-to-train-a-physics-informed-neural-network-on-burger-s-equation">
-<h1>This is a notebook to train a Physics Informed Neural Network on Burger’s equation<a class="headerlink" href="#this-is-a-notebook-to-train-a-physics-informed-neural-network-on-burger-s-equation" title="Permalink to this heading">#</a></h1>
+  <section id="pinns-burger-s-equation">
+<h1>PINNs Burger’s equation<a class="headerlink" href="#pinns-burger-s-equation" title="Permalink to this heading">#</a></h1>
 <p>The one dimensional Burger’s equation is given by:
 $<span class="math notranslate nohighlight">\(\frac{\partial u}{\partial t} + u \frac{\partial u}{\partial x} = \nu \frac{\partial^2 u}{\partial x^2}; \;\;\; x \in [-1, 1], t \in [0,1]\)</span>$</p>
 <p>This equation can be solved numerically with appropriate initial and boundary conditions. In this notebook, a physics informed neural network is trained to learn the solution of the Burger’s equation.</p>
@@ -436,15 +436,107 @@ $<span class="math notranslate nohighlight">\(\frac{\partial u}{\partial t} + u 
 <p>In the following cell we import the necessary libraries to set up the environment to run the code.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip3<span class="w"> </span>install<span class="w"> </span><span class="nv">torch</span><span class="o">==</span><span class="m">2</span>.1.0<span class="w"> </span><span class="nv">torchvision</span><span class="o">==</span><span class="m">0</span>.16.0<span class="w"> </span><span class="nv">torchaudio</span><span class="o">==</span><span class="m">2</span>.1.0<span class="w"> </span>--index-url<span class="w"> </span>https://download.pytorch.org/whl/cpu
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Defaulting to user installation because normal site-packages is not writeable
+Looking in indexes: https://download.pytorch.org/whl/cpu
+Collecting torch==2.1.0
+  Downloading https://download.pytorch.org/whl/cpu/torch-2.1.0%2Bcpu-cp311-cp311-linux_x86_64.whl (184.9 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">184.9/184.9 MB</span> <span class=" -Color -Color-Red">29.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>00:0100:01
+?25hCollecting torchvision==0.16.0
+  Downloading https://download.pytorch.org/whl/cpu/torchvision-0.16.0%2Bcpu-cp311-cp311-linux_x86_64.whl (1.6 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.6/1.6 MB</span> <span class=" -Color -Color-Red">6.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>00:0100:01
+?25hCollecting torchaudio==2.1.0
+  Downloading https://download.pytorch.org/whl/cpu/torchaudio-2.1.0%2Bcpu-cp311-cp311-linux_x86_64.whl (1.6 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.6/1.6 MB</span> <span class=" -Color -Color-Red">7.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>00:0100:01
+?25hCollecting filelock (from torch==2.1.0)
+  Downloading https://download.pytorch.org/whl/filelock-3.13.1-py3-none-any.whl (11 kB)
+Requirement already satisfied: typing-extensions in /opt/conda/lib/python3.11/site-packages (from torch==2.1.0) (4.8.0)
+Collecting sympy (from torch==2.1.0)
+  Downloading https://download.pytorch.org/whl/sympy-1.12-py3-none-any.whl (5.7 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">5.7/5.7 MB</span> <span class=" -Color -Color-Red">31.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>:00:0100:01
+?25hCollecting networkx (from torch==2.1.0)
+  Downloading https://download.pytorch.org/whl/networkx-3.2.1-py3-none-any.whl (1.6 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.6/1.6 MB</span> <span class=" -Color -Color-Red">10.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>:00:01
+?25hRequirement already satisfied: jinja2 in /opt/conda/lib/python3.11/site-packages (from torch==2.1.0) (3.1.2)
+Collecting fsspec (from torch==2.1.0)
+  Downloading https://download.pytorch.org/whl/fsspec-2024.2.0-py3-none-any.whl (170 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">170.9/170.9 kB</span> <span class=" -Color -Color-Red">2.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>a <span class=" -Color -Color-Cyan">0:00:01</span>
+?25hRequirement already satisfied: numpy in /opt/conda/lib/python3.11/site-packages (from torchvision==0.16.0) (1.26.2)
+Requirement already satisfied: requests in /opt/conda/lib/python3.11/site-packages (from torchvision==0.16.0) (2.31.0)
+Requirement already satisfied: pillow!=8.3.*,&gt;=5.3.0 in /opt/conda/lib/python3.11/site-packages (from torchvision==0.16.0) (10.1.0)
+Requirement already satisfied: MarkupSafe&gt;=2.0 in /opt/conda/lib/python3.11/site-packages (from jinja2-&gt;torch==2.1.0) (2.1.3)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/lib/python3.11/site-packages (from requests-&gt;torchvision==0.16.0) (3.3.0)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/lib/python3.11/site-packages (from requests-&gt;torchvision==0.16.0) (3.4)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/lib/python3.11/site-packages (from requests-&gt;torchvision==0.16.0) (2.0.7)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/lib/python3.11/site-packages (from requests-&gt;torchvision==0.16.0) (2023.7.22)
+Collecting mpmath&gt;=0.19 (from sympy-&gt;torch==2.1.0)
+  Downloading https://download.pytorch.org/whl/mpmath-1.3.0-py3-none-any.whl (536 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">536.2/536.2 kB</span> <span class=" -Color -Color-Red">22.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25hInstalling collected packages: mpmath, sympy, networkx, fsspec, filelock, torch, torchvision, torchaudio
+<span class=" -Color -Color-Yellow">  WARNING: The script isympy is installed in &#39;/home/tg458981/work/HPCWork/.jupyter-lab-hpc/.local/bin&#39; which is not on PATH.</span>
+<span class=" -Color -Color-Yellow">  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.</span>
+<span class=" -Color -Color-Yellow">  WARNING: The scripts convert-caffe2-to-onnx, convert-onnx-to-caffe2 and torchrun are installed in &#39;/home/tg458981/work/HPCWork/.jupyter-lab-hpc/.local/bin&#39; which is not on PATH.</span>
+<span class=" -Color -Color-Yellow">  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.</span>
+Successfully installed filelock-3.13.1 fsspec-2024.2.0 mpmath-1.3.0 networkx-3.2.1 sympy-1.12 torch-2.1.0+cpu torchaudio-2.1.0+cpu torchvision-0.16.0+cpu
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip3<span class="w"> </span>install<span class="w"> </span>matplotlib<span class="w"> </span>numpy<span class="w"> </span>tqdm<span class="w"> </span>scipy<span class="w"> </span>pyDOE<span class="w"> </span>--user
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: matplotlib in /opt/conda/lib/python3.11/site-packages (3.8.2)
+Requirement already satisfied: numpy in /opt/conda/lib/python3.11/site-packages (1.26.2)
+Requirement already satisfied: tqdm in /opt/conda/lib/python3.11/site-packages (4.66.1)
+Collecting scipy
+  Downloading scipy-1.14.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (60 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">60.8/60.8 kB</span> <span class=" -Color -Color-Red">1.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>a <span class=" -Color -Color-Cyan">0:00:01</span>
+?25hCollecting pyDOE
+  Using cached pyDOE-0.3.8.zip (22 kB)
+  Preparing metadata (setup.py) ... ?25ldone
+?25hRequirement already satisfied: contourpy&gt;=1.0.1 in /opt/conda/lib/python3.11/site-packages (from matplotlib) (1.2.0)
+Requirement already satisfied: cycler&gt;=0.10 in /opt/conda/lib/python3.11/site-packages (from matplotlib) (0.12.1)
+Requirement already satisfied: fonttools&gt;=4.22.0 in /opt/conda/lib/python3.11/site-packages (from matplotlib) (4.46.0)
+Requirement already satisfied: kiwisolver&gt;=1.3.1 in /opt/conda/lib/python3.11/site-packages (from matplotlib) (1.4.5)
+Requirement already satisfied: packaging&gt;=20.0 in /opt/conda/lib/python3.11/site-packages (from matplotlib) (23.2)
+Requirement already satisfied: pillow&gt;=8 in /opt/conda/lib/python3.11/site-packages (from matplotlib) (10.1.0)
+Requirement already satisfied: pyparsing&gt;=2.3.1 in /opt/conda/lib/python3.11/site-packages (from matplotlib) (3.1.1)
+Requirement already satisfied: python-dateutil&gt;=2.7 in /opt/conda/lib/python3.11/site-packages (from matplotlib) (2.8.2)
+Requirement already satisfied: six&gt;=1.5 in /opt/conda/lib/python3.11/site-packages (from python-dateutil&gt;=2.7-&gt;matplotlib) (1.16.0)
+Downloading scipy-1.14.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (41.1 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">41.1/41.1 MB</span> <span class=" -Color -Color-Red">47.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>:00:0100:01
+?25hBuilding wheels for collected packages: pyDOE
+  Building wheel for pyDOE (setup.py) ... ?25ldone
+?25h  Created wheel for pyDOE: filename=pyDOE-0.3.8-py3-none-any.whl size=18168 sha256=77c43d8710ca85466cd75b8b669f8d9a30188e33ac407821ee160e6f0a363e53
+  Stored in directory: /home/tg458981/work/HPCWork/.jupyter-lab-hpc/.cache/pip/wheels/84/20/8c/8bd43ba42b0b6d39ace1219d6da1576e0dac81b12265c4762e
+Successfully built pyDOE
+Installing collected packages: scipy, pyDOE
+Successfully installed pyDOE-0.3.8 scipy-1.14.0
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import necessary libraries</span>
 <span class="kn">import</span> <span class="nn">torch</span> 
 <span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">scipy</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">io</span>
 <span class="kn">from</span> <span class="nn">pyDOE</span> <span class="kn">import</span> <span class="n">lhs</span>
 <span class="kn">import</span> <span class="nn">time</span> 
 <span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">griddata</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
 </pre></div>
 </div>
 </div>
@@ -536,8 +628,7 @@ $<span class="math notranslate nohighlight">\(\frac{\partial u}{\partial t} + u 
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load and process data</span>
-
-<span class="n">data</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="s1">&#39;./burgers_shock.mat&#39;</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="s1">&#39;./burgers_shock.mat&#39;</span><span class="p">)</span>
 
 <span class="n">t</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()[:,</span><span class="kc">None</span><span class="p">]</span> <span class="c1"># The temporal domain is discretized between 0 to 1 in 100 points</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()[:,</span><span class="kc">None</span><span class="p">]</span> <span class="c1"># The spatial domain is discretized between -1 to 1 in 256 points</span>
@@ -626,13 +717,101 @@ $<span class="math notranslate nohighlight">\(\frac{\partial u}{\partial t} + u 
 <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">checkpt</span><span class="p">,</span> <span class="s1">&#39;Burgers_results.pt&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">n</span><span class="o">=</span><span class="mi">0</span>
+<span class="n">loss</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># Create a tqdm object for the progress bar</span>
+<span class="n">pbar</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">Nmax</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Training Progress&quot;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">pbar</span><span class="p">:</span>
+    <span class="c1"># Perform a single training step</span>
+    <span class="n">loss_</span> <span class="o">=</span> <span class="n">train_step</span><span class="p">(</span><span class="n">X_u_train_t</span><span class="p">,</span> <span class="n">u_train_t</span><span class="p">,</span> <span class="n">X_f_train_t</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">nu</span><span class="p">)</span>
+    
+    <span class="c1"># Get the loss value as a Python float</span>
+    <span class="n">loss_value</span> <span class="o">=</span> <span class="n">loss_</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+    
+    <span class="c1"># Append the loss value to the list</span>
+    <span class="n">loss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss_value</span><span class="p">)</span>
+    
+    <span class="c1"># Update the progress bar description with the current loss</span>
+    <span class="n">pbar</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Training Progress - Loss: </span><span class="si">{</span><span class="n">loss_value</span><span class="si">:</span><span class="s2">.4e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+<span class="c1"># After the loop, print the final loss</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Final loss: </span><span class="si">{</span><span class="n">loss</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.4e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Training time: </span><span class="si">%.4f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">elapsed</span><span class="p">))</span>
+
+<span class="n">checkpt</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;model&#39;</span><span class="p">:</span><span class="n">net_u</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span>
+           <span class="s1">&#39;Train_loss&#39;</span><span class="p">:</span><span class="n">loss</span><span class="p">,</span>    
+        <span class="p">}</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">checkpt</span><span class="p">,</span> <span class="s1">&#39;burgers_results.pt&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Training Progress - Loss: 2.7479e-01:   0%|          | 21/50001 [00:03&lt;2:34:19,  5.40it/s]
+</pre></div>
+</div>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">13</span><span class="p">],</span> <span class="n">line</span> <span class="mi">10</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="n">pbar</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">Nmax</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Training Progress&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">pbar</span><span class="p">:</span>
+<span class="g g-Whitespace">      </span><span class="mi">9</span>     <span class="c1"># Perform a single training step</span>
+<span class="ne">---&gt; </span><span class="mi">10</span>     <span class="n">loss_</span> <span class="o">=</span> <span class="n">train_step</span><span class="p">(</span><span class="n">X_u_train_t</span><span class="p">,</span> <span class="n">u_train_t</span><span class="p">,</span> <span class="n">X_f_train_t</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">nu</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">12</span>     <span class="c1"># Get the loss value as a Python float</span>
+<span class="g g-Whitespace">     </span><span class="mi">13</span>     <span class="n">loss_value</span> <span class="o">=</span> <span class="n">loss_</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+<span class="nn">Cell In[6], line 12,</span> in <span class="ni">train_step</span><span class="nt">(X_u_train_t, u_train_t, X_f_train_t, opt, nu)</span>
+<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="n">f_nn</span> <span class="o">=</span> <span class="n">net_f</span><span class="p">(</span><span class="n">x_f</span><span class="p">,</span><span class="n">t_f</span><span class="p">,</span> <span class="n">nu</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">11</span> <span class="n">loss</span> <span class="o">=</span>  <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">u_nn</span> <span class="o">-</span> <span class="n">u_train_t</span><span class="p">))</span> <span class="o">+</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">f_nn</span><span class="p">))</span>
+<span class="ne">---&gt; </span><span class="mi">12</span> <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+<span class="g g-Whitespace">     </span><span class="mi">13</span> <span class="n">opt</span><span class="o">.</span><span class="n">step</span><span class="p">()</span> 
+<span class="g g-Whitespace">     </span><span class="mi">14</span> <span class="k">return</span> <span class="n">loss</span>
+
+<span class="nn">File ~/.local/lib/python3.11/site-packages/torch/_tensor.py:492,</span> in <span class="ni">Tensor.backward</span><span class="nt">(self, gradient, retain_graph, create_graph, inputs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">482</span> <span class="k">if</span> <span class="n">has_torch_function_unary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">483</span>     <span class="k">return</span> <span class="n">handle_torch_function</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">484</span>         <span class="n">Tensor</span><span class="o">.</span><span class="n">backward</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">485</span>         <span class="p">(</span><span class="bp">self</span><span class="p">,),</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">490</span>         <span class="n">inputs</span><span class="o">=</span><span class="n">inputs</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">491</span>     <span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">492</span> <span class="n">torch</span><span class="o">.</span><span class="n">autograd</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">493</span>     <span class="bp">self</span><span class="p">,</span> <span class="n">gradient</span><span class="p">,</span> <span class="n">retain_graph</span><span class="p">,</span> <span class="n">create_graph</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="n">inputs</span>
+<span class="g g-Whitespace">    </span><span class="mi">494</span> <span class="p">)</span>
+
+<span class="nn">File ~/.local/lib/python3.11/site-packages/torch/autograd/__init__.py:251,</span> in <span class="ni">backward</span><span class="nt">(tensors, grad_tensors, retain_graph, create_graph, grad_variables, inputs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">246</span>     <span class="n">retain_graph</span> <span class="o">=</span> <span class="n">create_graph</span>
+<span class="g g-Whitespace">    </span><span class="mi">248</span> <span class="c1"># The reason we repeat the same comment below is that</span>
+<span class="g g-Whitespace">    </span><span class="mi">249</span> <span class="c1"># some Python versions print out the first line of a multi-line function</span>
+<span class="g g-Whitespace">    </span><span class="mi">250</span> <span class="c1"># calls in the traceback and some print out the last line</span>
+<span class="ne">--&gt; </span><span class="mi">251</span> <span class="n">Variable</span><span class="o">.</span><span class="n">_execution_engine</span><span class="o">.</span><span class="n">run_backward</span><span class="p">(</span>  <span class="c1"># Calls into the C++ engine to run the backward pass</span>
+<span class="g g-Whitespace">    </span><span class="mi">252</span>     <span class="n">tensors</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">253</span>     <span class="n">grad_tensors_</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">254</span>     <span class="n">retain_graph</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">255</span>     <span class="n">create_graph</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">256</span>     <span class="n">inputs</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">257</span>     <span class="n">allow_unreachable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">258</span>     <span class="n">accumulate_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">259</span> <span class="p">)</span>
+
+<span class="ne">KeyboardInterrupt</span>: 
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 <section id="predict-solutions-and-visualize-results">
 <h2>Predict solutions and visualize results<a class="headerlink" href="#predict-solutions-and-visualize-results" title="Permalink to this heading">#</a></h2>
 <p>Finally we load the model, predict the solution of the Burger’s equation and compute the errors.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ckpt</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;Burgers_results.pt&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ckpt</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;burgers_results.pt&#39;</span><span class="p">)</span>
 <span class="n">net_u</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">ckpt</span><span class="p">[</span><span class="s1">&#39;model&#39;</span><span class="p">])</span>
 <span class="n">loss</span> <span class="o">=</span> <span class="n">ckpt</span><span class="p">[</span><span class="s1">&#39;Train_loss&#39;</span><span class="p">]</span>
 </pre></div>
@@ -654,7 +833,7 @@ $<span class="math notranslate nohighlight">\(\frac{\partial u}{\partial t} + u 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error u: 3.390147e-02
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error u: 6.559859e-02
 </pre></div>
 </div>
 </div>
@@ -681,7 +860,7 @@ $<span class="math notranslate nohighlight">\(\frac{\partial u}{\partial t} + u 
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loss convergence
 </pre></div>
 </div>
-<img alt="../_images/9f410ca2c980d01e39513f2743afd3b87b46941e47858024b3fe5d0ed53efd03.png" src="../_images/9f410ca2c980d01e39513f2743afd3b87b46941e47858024b3fe5d0ed53efd03.png" />
+<img alt="../_images/79161d018a677005968e2fd558515fd0ea6f77adc458ae6c9ef805b5bb03f53b.png" src="../_images/79161d018a677005968e2fd558515fd0ea6f77adc458ae6c9ef805b5bb03f53b.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -708,7 +887,7 @@ $<span class="math notranslate nohighlight">\(\frac{\partial u}{\partial t} + u 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/16f8565aa54069acef91a3a915d42c52ca6e44e2448b69ba0be2953a92b73791.png" src="../_images/16f8565aa54069acef91a3a915d42c52ca6e44e2448b69ba0be2953a92b73791.png" />
+<img alt="../_images/e320248509e360ba2986af41e42cccc1fe831bd6dbf701c888804cb9b264c726.png" src="../_images/e320248509e360ba2986af41e42cccc1fe831bd6dbf701c888804cb9b264c726.png" />
 </div>
 </div>
 </section>
