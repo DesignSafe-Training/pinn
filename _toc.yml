@@ -8,3 +8,4 @@ chapters:
   - file: 01-pinn/01-pinn
   - file: 02-pinn-heat-transfer/02-pinn-heat-transfer
   - file: 03-burgers/03-burgers
+  - file: 04-pinn/burger_pytorch.ipynb
